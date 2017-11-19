@@ -24,6 +24,26 @@ def foreground2BinImg(f):
     return img.morphology.binary_closing(d)
 
 
+def plotear(x, y, extra=True):
+    """
+    """
+    fig = plt.figure(figsize=(7.5, 3.5))
+    ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])
+    ax.plot(
+            x, 
+            y, 
+            'ro', lw=2)
+    ax.set_xlabel(r'1 / s', size=14)
+    ax.set_ylabel(r'n', size=14)
+
+    # log scale
+    if extra:
+        ax.set_xscale('log')
+        ax.set_yscale('log')
+
+    plt.show()
+
+
 def draw_rectangle(image, x, y, size):
     """
     Given a black-and-white image with 3 channels, draw a rectancle in specific
@@ -55,12 +75,6 @@ def binarization2(f, t=0):
     return np.where(f>=t, 0, 1)
 
 
-def draw_boxes(image, n=2):
-    """
-    """
-    points = np.linspace(0, image.shape[0], 3)
-
-
 def box_counting(image_bin, n=2):
     """
     """
@@ -85,7 +99,7 @@ def box_counting(image_bin, n=2):
             a += 1
 
     patches = patches.reshape((n, n))
-    no_boxes = np.sum(patches)
+    no_boxes = int(np.sum(patches))
     patches_pos = np.argwhere(patches == 1) * step
 
     # draw patches
@@ -97,16 +111,24 @@ def box_counting(image_bin, n=2):
 
 
 # read images
-#tree2 = misc.imread("tree-2.png")
-#light3 = misc.imread("lightning-3.png", flatten=True)
-imgName = "images/light.ppm"
-f = misc.imread(imgName, flatten=True).astype(np.float)
-image_bin = foreground2BinImg(f)
+tree2 = misc.imread("images/tree-2.png")
+light3 = misc.imread("images/lightning-3.png", flatten=True)
+light0 = misc.imread("images/light.ppm", flatten=True).astype(np.float)
+
+image = light3
+image_bin = foreground2BinImg(image)
 image_bin = np.logical_not(image_bin)
 
 # ToDo: complete the third step
-# apply box counting
-_, count = box_counting(image_bin, n=4)
-_, count = box_counting(image_bin, n=8)
-boxes, count = box_counting(image_bin, n=16)
-#misc.imshow(boxes)
+ns = np.linspace(1, 7, 7).astype(np.int)
+scaling_factors = 2 ** ns
+boxes_by_scale = []
+
+for scale in scaling_factors:
+    boxes, count = box_counting(image_bin, n=scale)
+    boxes_by_scale.append(count)
+    #misc.imshow(boxes)
+    misc.imsave("out/boxes_{}.png".format(count), boxes)
+
+#plotear(ns, boxes_by_scale)
+#plotear(np.log10(ns), np.log10(boxes_by_scale), extra=False)
