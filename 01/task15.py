@@ -30,8 +30,8 @@ def plotear(x, y, extra=True):
     fig = plt.figure(figsize=(7.5, 3.5))
     ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])
     ax.plot(
-            x, 
-            y, 
+            x,
+            y,
             'ro', lw=2)
     ax.set_xlabel(r'1 / s', size=14)
     ax.set_ylabel(r'n', size=14)
@@ -65,14 +65,6 @@ def draw_rectangle(image, x, y, size):
     image[:,:,0][x:x+size, y+size:y+size+1] = 1
     image[:,:,1][x:x+size, y+size:y+size+1] = 0
     image[:,:,2][x:x+size, y+size:y+size+1] = 0
-
-
-def binarization(f, t=0):
-    return np.where(f>=t, 1, 0)
-
-
-def binarization2(f, t=0):
-    return np.where(f>=t, 0, 1)
 
 
 def box_counting(image_bin, n=2):
@@ -115,7 +107,7 @@ tree2 = misc.imread("images/tree-2.png")
 light3 = misc.imread("images/lightning-3.png", flatten=True)
 light0 = misc.imread("images/light.ppm", flatten=True).astype(np.float)
 
-image = light3
+image = light0
 image_bin = foreground2BinImg(image)
 image_bin = np.logical_not(image_bin)
 
@@ -128,7 +120,8 @@ for scale in scaling_factors:
     boxes, count = box_counting(image_bin, n=scale)
     boxes_by_scale.append(count)
     #misc.imshow(boxes)
-    misc.imsave("out/boxes_{}.png".format(count), boxes)
+    misc.imsave("out/light3_boxes_{}.png".format(count), boxes)
 
-#plotear(ns, boxes_by_scale)
-#plotear(np.log10(ns), np.log10(boxes_by_scale), extra=False)
+# plot results
+plotear(scaling_factors, boxes_by_scale)
+plotear(np.log10(scaling_factors), np.log10(boxes_by_scale), extra=False)
