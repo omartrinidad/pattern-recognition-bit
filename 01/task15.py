@@ -24,7 +24,7 @@ def foreground2BinImg(f):
     return img.morphology.binary_closing(d)
 
 
-def plotear(x, y, extra=True):
+def plotting(x, y, path, extra=True, save=True, show=False):
     """
     """
     fig = plt.figure(figsize=(7.5, 3.5))
@@ -41,7 +41,10 @@ def plotear(x, y, extra=True):
         ax.set_xscale('log')
         ax.set_yscale('log')
 
-    plt.show()
+    if save:
+        plt.savefig(path, bbox_inches="tight", pad_inches=0)
+    if show:
+        plt.show()
 
 
 def draw_rectangle(image, x, y, size):
@@ -102,26 +105,35 @@ def box_counting(image_bin, n=2):
     return boxes, no_boxes
 
 
+def generate_images(image, path, show=True):
+    """
+    """
+    image_bin = foreground2BinImg(image)
+    image_bin = np.logical_not(image_bin)
+
+    ns = np.linspace(1, 7, 7).astype(np.int)
+    scaling_factors = 2 ** ns
+    boxes_by_scale = []
+
+    for scale in scaling_factors:
+        boxes, count = box_counting(image_bin, n=scale)
+        boxes_by_scale.append(count)
+        misc.imsave(path + "_{}.png".format(count), boxes)
+        if show:
+            misc.imshow(boxes)
+
+    plotting(scaling_factors, boxes_by_scale, path + "_points.png", show=True)
+
+
 # read images
+light0 = misc.imread("images/light.ppm", flatten=True).astype(np.float)
 tree2 = misc.imread("images/tree-2.png")
 light3 = misc.imread("images/lightning-3.png", flatten=True)
-light0 = misc.imread("images/light.ppm", flatten=True).astype(np.float)
 
-image = light0
-image_bin = foreground2BinImg(image)
-image_bin = np.logical_not(image_bin)
-
-# ToDo: complete the third step
-ns = np.linspace(1, 7, 7).astype(np.int)
-scaling_factors = 2 ** ns
-boxes_by_scale = []
-
-for scale in scaling_factors:
-    boxes, count = box_counting(image_bin, n=scale)
-    boxes_by_scale.append(count)
-    #misc.imshow(boxes)
-    misc.imsave("out/light3_boxes_{}.png".format(count), boxes)
+# generate boxes
+generate_images(light0, "out/light3/boxes")
+generate_images(tree2, "out/tree2/boxes")
+generate_images(light3, "out/light3/boxes")
 
 # plot results
-plotear(scaling_factors, boxes_by_scale)
-plotear(np.log10(scaling_factors), np.log10(boxes_by_scale), extra=False)
+# plotear(np.log10(scaling_factors), np.log10(boxes_by_scale), extra=False)
