@@ -8,7 +8,32 @@ import pylab
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy.ndimage as img
+import numpy.linalg as la
+
 from scipy import misc
+from scipy.stats import linregress
+
+
+def data_matrix_V1(x):
+    """ Taken from Recipes for Data Science """
+    n = len(x)
+    return np.vstack((x, np.ones(n))).T
+
+
+def lsq_solution_V1(X, y):
+    """ Taken from Recipes for Data Science """
+    w = np.dot(np.dot(la.inv(np.dot(X.T, X)), X.T), y)
+    return w
+
+
+def least_squares(x, y):
+    """
+    Given some points return a linear model
+    """
+    # x becomes X
+    X = data_matrix_V1(x)
+    w = lsq_solution_V1(X, y)
+    return w
 
 
 def foreground2BinImg(f):
@@ -24,17 +49,30 @@ def foreground2BinImg(f):
     return img.morphology.binary_closing(d)
 
 
-def plotting(x, y, path, extra=True, save=True, show=False):
+def plotting(x, y, path, extra=True, save=False, show=False, title=""):
     """
+    x, y, log values
     """
-    fig = plt.figure(figsize=(7.5, 3.5))
+    plt.rc('text', usetex=True)
+    plt.rc('font', family='serif')
+
+    fig = plt.figure(figsize=(5, 3))
     ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])
-    ax.plot(
-            x,
-            y,
-            'ro', lw=2)
-    ax.set_xlabel(r'1 / s', size=14)
-    ax.set_ylabel(r'n', size=14)
+    ax.plot( x, y, 'ro', lw=2)
+
+
+    # fit a line
+    lr = linregress(x, y)
+    slope = lr.slope # D, slope
+    offset = lr.intercept # b, offset
+
+    plt.title(" {}\nSlope {:0.3f},\nOffset {:0.3f}".format(title, slope, offset))
+
+    abline_values = [slope * i + offset for i in range(0, 7)]
+    ax.plot(range(0, 7), abline_values)
+
+    ax.set_xlabel(r'$\log{\frac{1}{s}}$', size=14)
+    ax.set_ylabel(r'$\log{n}$', size=14)
 
     # log scale
     if extra:
@@ -53,21 +91,21 @@ def draw_rectangle(image, x, y, size):
     coordinates.
     """
     # draw horizontal lines
-    image[:,:,0][x:x+1, y:y+size] = 1
-    image[:,:,1][x:x+1, y:y+size] = 0
-    image[:,:,2][x:x+1, y:y+size] = 0
+    image[:,:,0][x:x+1, y:y+size] = 0
+    image[:,:,1][x:x+1, y:y+size] = 0 
+    image[:,:,2][x:x+1, y:y+size] = 1
     #
-    image[:,:,0][x+size:x+size+1, y:y+size] = 1
+    image[:,:,0][x+size:x+size+1, y:y+size] = 0
     image[:,:,1][x+size:x+size+1, y:y+size] = 0
-    image[:,:,2][x+size:x+size+1, y:y+size] = 0
+    image[:,:,2][x+size:x+size+1, y:y+size] = 1
     # draw vertical lines
-    image[:,:,0][x:x+size, y:y+1] = 1
-    image[:,:,1][x:x+size, y:y+1] = 0
-    image[:,:,2][x:x+size, y:y+1] = 0
+    image[:,:,0][x:x+size, y:y+1] = 0
+    image[:,:,1][x:x+size, y:y+1] = 0 
+    image[:,:,2][x:x+size, y:y+1] = 1
     #
-    image[:,:,0][x:x+size, y+size:y+size+1] = 1
+    image[:,:,0][x:x+size, y+size:y+size+1] = 0
     image[:,:,1][x:x+size, y+size:y+size+1] = 0
-    image[:,:,2][x:x+size, y+size:y+size+1] = 0
+    image[:,:,2][x:x+size, y+size:y+size+1] = 1
 
 
 def box_counting(image_bin, n=2):
@@ -105,7 +143,7 @@ def box_counting(image_bin, n=2):
     return boxes, no_boxes
 
 
-def generate_images(image, path, show=True):
+def generate_images(image, path, show=True, save=False):
     """
     """
     image_bin = foreground2BinImg(image)
@@ -118,22 +156,37 @@ def generate_images(image, path, show=True):
     for scale in scaling_factors:
         boxes, count = box_counting(image_bin, n=scale)
         boxes_by_scale.append(count)
-        misc.imsave(path + "_{}.png".format(count), boxes)
+
+        if save:
+            misc.imsave(path + "_{}.png".format(count), boxes)
         if show:
             misc.imshow(boxes)
 
-    plotting(scaling_factors, boxes_by_scale, path + "_points.png", show=True)
+    return scaling_factors, boxes_by_scale
 
 
 # read images
 light0 = misc.imread("images/light.ppm", flatten=True).astype(np.float)
-tree2 = misc.imread("images/tree-2.png")
+tree2 = misc.imread("images/tree-2.png", flatten=True).astype(np.float)
 light3 = misc.imread("images/lightning-3.png", flatten=True)
 
-# generate boxes
-generate_images(light0, "out/light3/boxes")
-generate_images(tree2, "out/tree2/boxes")
-generate_images(light3, "out/light3/boxes")
+# Solution for exemplary image
+path = 'out/light/boxes'
+scaling_factors, boxes_by_scale = generate_images(light0, path, show=True)
+log_1_si = np.log(scaling_factors)
+log_ni = np.log(boxes_by_scale)
+plotting(log_1_si, log_ni, path + "_points.png", extra=False, show=True)
 
-# plot results
-# plotear(np.log10(scaling_factors), np.log10(boxes_by_scale), extra=False)
+# Solution for tree-2.png image
+path = 'out/tree2/boxes'
+scaling_factors, boxes_by_scale = generate_images(tree2, path, show=True)
+log_1_si = np.log(scaling_factors)
+log_ni = np.log(boxes_by_scale)
+plotting(log_1_si, log_ni, path + "_points.png", extra=False, show=True, title="Tree")
+
+# Solution for lightning-3.png image
+path = 'out/light3/boxes'
+scaling_factors, boxes_by_scale = generate_images(light3, path, show=True)
+log_1_si = np.log(scaling_factors)
+log_ni = np.log(boxes_by_scale)
+plotting(log_1_si, log_ni, path + "_points.png", extra=False, show=True, title="Light")
