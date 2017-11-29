@@ -49,6 +49,62 @@ def foreground2BinImg(f):
     return img.morphology.binary_closing(d)
 
 
+def plot_both_models(image1, image2, path, extra=True, save=False, show=False, title=""):
+    """
+    Function that plots two models and make a comparison
+    """
+    plt.rc('text', usetex=True)
+    plt.rc('font', family='serif')
+
+    # first model
+    scaling_factors, boxes_by_scale = generate_images(image1, path, show=False)
+    x = np.log(scaling_factors)
+    y = np.log(boxes_by_scale)
+
+    fig = plt.figure(figsize=(5, 3))
+    ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])
+    ax.plot( x, y, 'ro', lw=3, label="Tree")
+
+    # fit a line
+    lr = linregress(x, y)
+    slope = lr.slope # D, slope
+    offset = lr.intercept # b, offset
+
+    abline_values = [slope * i + offset for i in range(0, 7)]
+    ax.plot(range(0, 7), abline_values, color="r")
+    
+    # second model
+    scaling_factors, boxes_by_scale = generate_images(image2, path, show=False)
+    x = np.log(scaling_factors)
+    y = np.log(boxes_by_scale)
+
+    ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])
+    ax.plot( x, y, 'bo', lw=3, label="Light")
+
+    # fit a line
+    lr = linregress(x, y)
+    slope = lr.slope # D, slope
+    offset = lr.intercept # b, offset
+
+    abline_values = [slope * i + offset for i in range(0, 7)]
+    ax.plot(range(0, 7), abline_values, color="b")
+
+    ax.set_xlabel(r'$\log{\frac{1}{s}}$', size=14)
+    ax.set_ylabel(r'$\log{n}$', size=14)
+
+    # log scale
+    #if extra:
+    #    ax.set_xscale('log')
+    #    ax.set_yscale('log')
+
+    plt.legend()
+
+    if save:
+        plt.savefig(path + "both_plots.png", bbox_inches="tight", pad_inches=0)
+    if show:
+        plt.show()
+
+
 def plotting(x, y, path, extra=True, save=False, show=False, title=""):
     """
     x, y, log values
@@ -190,3 +246,7 @@ scaling_factors, boxes_by_scale = generate_images(light3, path, show=True)
 log_1_si = np.log(scaling_factors)
 log_ni = np.log(boxes_by_scale)
 plotting(log_1_si, log_ni, path + "_points.png", extra=False, show=True, title="Light")
+
+# Plot to compare both models
+path = 'out/'
+plot_both_models(tree2, light3, path, extra=True, save=False, show=True, title="")
