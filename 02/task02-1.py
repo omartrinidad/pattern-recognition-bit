@@ -14,7 +14,7 @@ Created on Wed Dec 20 17:41:13 2017
 import numpy as np
 import matplotlib.pyplot as plt
 
-def draw_plot(X,y,nX,ny):
+def draw_plot(X,y,nX,ny,mx,my):
     # create a figure and its axes
     fig = plt.figure()
     axs = fig.add_subplot(111)
@@ -26,6 +26,7 @@ def draw_plot(X,y,nX,ny):
     # plot the data 
     axs.plot(X[:,1], y, 'ro', label='data')
     axs.plot(nX[:,1], ny, 'ro', label='Least Squares Regression')
+    axs.plot(mx,my, c= 'blue',  label='Predict outliers')
     
     axs.tick_params(axis='x', labelsize=13)
     axs.tick_params(axis='y', labelsize=13)
@@ -61,9 +62,27 @@ for d in [1,5,10]:
             X[i,j]=x[i]**(j+1)
     X=data_matrix(X)
     W=lsq_solution(X,y)
-    #print(np.dot(X,W))
-    #print(y)
-    ########### producing new data #######
+
+########### predict missing value ########
+    mx=[]
+    my=[]
+    for i in range(len(w)):
+        if w[i]<=0:
+            minDif=h[i]
+            nw=W[0]
+            for j in range(int(X[:,1].min()),int(X[:,1].max())):
+                pw=0
+                for ik,k in enumerate(W):
+                    pw+=k*(j**ik)
+                if abs(h[i]-pw)<minDif:
+                    minDif=abs(h[i]-pw)
+                    nw=j
+            mx.append(nw)
+            my.append(h[i])
+            print  ("weight: " ,nw, "height: ",h[i])
+    print("dgree is ", ik)
+            
+########### producing new data #######
     
     nx=np.linspace(X[:,1].min(),X[:,1].max(),200)
     nX=np.zeros((len(nx),d))
@@ -71,9 +90,7 @@ for d in [1,5,10]:
     for i in range(nX.shape[0]):
         for j in range(nX.shape[1]):
             nX[i,j]=nx[i]**(j+1)
-    #print(nX)
     nX=data_matrix(nX)
     
     ny=np.dot(nX,W)
-    #print(ny)
-    draw_plot(X,y,nX,ny)
+    draw_plot(X,y,nX,ny,mx,my)
