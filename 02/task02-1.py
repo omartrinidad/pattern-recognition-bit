@@ -25,8 +25,8 @@ def draw_plot(X,y,nX,ny,mx,my):
     
     # plot the data 
     axs.plot(X[:,1], y, 'ro', label='data')
-    axs.plot(nX[:,1], ny, 'ro', label='Least Squares Regression')
-    axs.plot(mx,my, c= 'blue',  label='Predict outliers')
+    axs.plot(nX[:,1], ny, label='Least Squares Regression')
+    axs.plot(mx,my, 'ro',c= 'green',  label='Predict outliers')
     
     axs.tick_params(axis='x', labelsize=13)
     axs.tick_params(axis='y', labelsize=13)
