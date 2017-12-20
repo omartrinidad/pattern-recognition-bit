@@ -19,7 +19,7 @@ def one2two(one):
     return two
 
 
-def binary_plot(binary_matrix, path, color, title):
+def binary_plot(binary_matrix, path, color, title, labels=True):
     """Binary plot from binary matrix"""
 
     fig, ax = plt.subplots()
@@ -50,7 +50,7 @@ def binary_plot(binary_matrix, path, color, title):
     ax.set_yticks(np.arange(0, y, 1)-0.5, minor=True)
 
     #ax.set_xticklabels(np.arange(x-1, -1, -1), minor=True, horizontalalignment='center')
-    ax.xaxis.set(ticks=np.arange(0, x, 1), ticklabels=np.arange(x-1, -1, -1))
+    ax.yaxis.set(ticks=np.arange(0, y, 1), ticklabels=np.arange(y-1, -1, -1))
 
     ax.grid(which='minor', color='black', linestyle='-', linewidth=1.444)
     plt.savefig(path, bbox_inches="tight", pad_inches=0)
@@ -106,7 +106,7 @@ bits = np.unpackbits(integers)
 bits = bits.reshape((8,8))[:,5:]
 bits = np.where(bits == 0, -1, +1)
 
-#binary_plot(bits, "out/wolfram_rule.png", 'red', "Bits")
+binary_plot(bits, "out/wolfram_rule.png", 'red', "Bits")
 
 # y matrix
 y_110 = wolfram_rule(110)
