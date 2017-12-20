@@ -10,11 +10,20 @@ import matplotlib.pyplot as plt
 from itertools import chain, combinations
 from functools import reduce
 
+from matplotlib import rc
+rc("text", usetex=True)
+mpl.rcParams['text.latex.preamble']=[r"\usepackage{amsmath}"]
 
-def binary_plot(binary_matrix, path, color):
+def one2two(one):
+    two = one.reshape((len(one), 1))
+    return two
+
+
+def binary_plot(binary_matrix, path, color, title):
     """Binary plot from binary matrix"""
 
     fig, ax = plt.subplots()
+    plt.title(title)
 
     # define the colors
     cmap = mpl.colors.ListedColormap(['w', color])
@@ -25,6 +34,7 @@ def binary_plot(binary_matrix, path, color):
 
     # get rid off from axis
     frame1 = plt.gca()
+    frame1.axes.xaxis.set_ticklabels([])
     frame1.axes.yaxis.set_ticklabels([])
 
     # add text
@@ -38,6 +48,9 @@ def binary_plot(binary_matrix, path, color):
 
     ax.set_xticks(np.arange(0, x, 1)-0.5, minor=True)
     ax.set_yticks(np.arange(0, y, 1)-0.5, minor=True)
+
+    #ax.set_xticklabels(np.arange(x-1, -1, -1), minor=True, horizontalalignment='center')
+    ax.xaxis.set(ticks=np.arange(0, x, 1), ticklabels=np.arange(x-1, -1, -1))
 
     ax.grid(which='minor', color='black', linestyle='-', linewidth=1.444)
     plt.savefig(path, bbox_inches="tight", pad_inches=0)
@@ -93,30 +106,27 @@ bits = np.unpackbits(integers)
 bits = bits.reshape((8,8))[:,5:]
 bits = np.where(bits == 0, -1, +1)
 
-binary_plot(bits, "out/wolfram_rule.png", 'red')
+#binary_plot(bits, "out/wolfram_rule.png", 'red', "Bits")
 
 # y matrix
 y_110 = wolfram_rule(110)
 y_126 = wolfram_rule(126)
+
+# Original y
+#binary_plot(one2two(y_110), "out/rule_110.png", 'blue', r"$\boldsymbol{y}$ for rule 110")
+#binary_plot(one2two(y_126), "out/rule_126.png", 'blue', r"$\boldsymbol{y}$ for rule 126")
 
 # y_hat matrix
 X = data_matrix_V1(bits)
 w_110 = lsq_solution_V3(X, y_110)
 w_126 = lsq_solution_V3(X, y_126)
 
-#print(w_110)
-#print(w_126)
-
 yhat_110 = np.dot(X, w_110)
 yhat_126 = np.dot(X, w_126)
 
-print("Comparison between yhat and y. 126")
-print(y_126)
-print(np.around(yhat_126))
-
-print("Comparison between yhat and y. 110")
-#binary_plot(y_110.reshape(8, 1))
-#binary_plot(yhat_110.reshape(8, 1))
+# y hat
+#binary_plot(one2two(yhat_110), "out/y_hat_110.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 110")
+#binary_plot(one2two(yhat_126), "out/y_hat_126.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 126")
 
 # Third part of the task
 # Generate the PHI matrix
@@ -130,19 +140,13 @@ for b in bits[1:]:
     bi = bi.reshape(8, 1)
     big_phi = np.hstack((big_phi, bi))
 
-print("------------------------------------")
-print("Comparison between yhat and y. 110")
 w_110 = lsq_solution_V3(big_phi, y_110)
 yhat_110 = np.dot(big_phi, w_110)
 
-print(y_110.reshape(8, 1))
-print(np.around(yhat_110).reshape(8, 1))
-
-print("Comparison between yhat and y. 126")
-w_110 = lsq_solution_V3(big_phi, y_110)
 w_126 = lsq_solution_V3(big_phi, y_126)
 yhat_126 = np.dot(big_phi, w_126)
-print(y_126)
-print(np.around(yhat_126))
 
-binary_plot(big_phi, "out/feature_design_matrix.png", 'red')
+binary_plot(big_phi, "out/feature_design_matrix.png", 'red', r"Feature design matrix $\Phi$")
+
+#binary_plot(one2two(yhat_110), "out/y_hat_110_2.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 110")
+#binary_plot(one2two(yhat_126), "out/y_hat_126_2.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 126")
