@@ -130,15 +130,11 @@ yhat_126 = np.dot(X, w_126)
 
 # Third part of the task
 # Generate the PHI matrix
-big_phi = phi(bits[0])
-big_phi = np.array(big_phi)
-big_phi = big_phi.reshape(8, 1)
+big_phi = np.array(phi(bits[0]))
 
 for b in bits[1:]:
-    bi = phi(b)
-    bi = np.array(bi)
-    bi = bi.reshape(8, 1)
-    big_phi = np.hstack((big_phi, bi))
+  bi = np.array(phi(b))
+  big_phi = np.vstack((big_phi, bi))
 
 w_110 = lsq_solution_V3(big_phi, y_110)
 yhat_110 = np.dot(big_phi, w_110)
