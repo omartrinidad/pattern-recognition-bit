@@ -1,10 +1,6 @@
 import numpy as np
 import sympy as sp
 import matplotlib.pyplot as plt
-from scipy.interpolate import griddata
-import numpy.ma as ma
-from numpy.random import uniform, seed
-from matplotlib import cm
 import matplotlib.mlab as mlab
 
 def gauss(x,y):
