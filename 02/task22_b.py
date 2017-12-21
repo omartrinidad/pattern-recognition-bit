@@ -48,9 +48,9 @@ corr_hw = covariance_matrix[0, 1] / (std_h * std_w)
 f = lambda x : mean_w + corr_hw * std_w / std_h * (x - mean_h)
 
 # Plot data
-plt.plot(train_data, train_labels, 'k.')
+plt.plot(train_data, train_labels, 'k.', label='Data')
 # Plot predicted value
-plt.plot(test_data, f(test_data), 'r.')
+plt.plot(test_data, f(test_data), 'r.', label='Predictions')
 # Plot the model
 ## Grid XY points to build contour
 x = np.linspace(np.amin(train_data)-5, np.amax(train_data)+5, 1000)
@@ -62,5 +62,5 @@ plt.contour(x,y,zi)
 
 plt.xlim(np.amin(train_data)-5, np.amax(train_data)+5)
 plt.ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
-
+plt.legend(loc='upper left')
 plt.show()
