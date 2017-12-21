@@ -15,7 +15,7 @@ def polynomial_regression(x, y, d):
 
 # Importing dataset
 ## Dataset path
-dataset_path = 'whData.dat'
+dataset_path = 'data/whData.dat'
 ## Column names
 dt = np.dtype([('w', np.float), ('h', np.float), ('g', np.str_, 1)])
 ## Loading the dataset
@@ -69,4 +69,5 @@ for i in range(len(d)):
 fig.legend((l1, l2, l3), ('Data', 'Polynomial fitted line', 'Predictions'), 'lower right')
 fig.text(0.5, 0.04, 'Height', ha='center')
 fig.text(0.04, 0.5, 'Weight', va='center', rotation='vertical')
+plt.savefig("out/regression/plots.png", bbox_inches="tight", pad_inches=0)
 plt.show()
