@@ -106,15 +106,15 @@ bits = np.unpackbits(integers)
 bits = bits.reshape((8,8))[:,5:]
 bits = np.where(bits == 0, -1, +1)
 
-binary_plot(bits, "out/wolfram_rule.png", 'red', "Bits")
+binary_plot(bits, "out/task24/wolfram_rule.png", 'red', "Bits")
 
 # y matrix
 y_110 = wolfram_rule(110)
 y_126 = wolfram_rule(126)
 
 # Original y
-#binary_plot(one2two(y_110), "out/rule_110.png", 'blue', r"$\boldsymbol{y}$ for rule 110")
-#binary_plot(one2two(y_126), "out/rule_126.png", 'blue', r"$\boldsymbol{y}$ for rule 126")
+binary_plot(one2two(y_110), "out/rule_110.png", 'blue', r"$\boldsymbol{y}$ for rule 110")
+binary_plot(one2two(y_126), "out/rule_126.png", 'blue', r"$\boldsymbol{y}$ for rule 126")
 
 # y_hat matrix
 X = data_matrix_V1(bits)
@@ -125,8 +125,8 @@ yhat_110 = np.dot(X, w_110)
 yhat_126 = np.dot(X, w_126)
 
 # y hat
-#binary_plot(one2two(yhat_110), "out/y_hat_110.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 110")
-#binary_plot(one2two(yhat_126), "out/y_hat_126.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 126")
+binary_plot(one2two(yhat_110), "out/task24/y_hat_110.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 110")
+binary_plot(one2two(yhat_126), "out/task24/y_hat_126.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 126")
 
 # Third part of the task
 # Generate the PHI matrix
@@ -142,7 +142,7 @@ yhat_110 = np.dot(big_phi, w_110)
 w_126 = lsq_solution_V3(big_phi, y_126)
 yhat_126 = np.dot(big_phi, w_126)
 
-binary_plot(big_phi, "out/feature_design_matrix.png", 'red', r"Feature design matrix $\Phi$")
+binary_plot(big_phi, "out/task24/feature_design_matrix.png", 'red', r"Feature design matrix $\Phi$")
 
-#binary_plot(one2two(yhat_110), "out/y_hat_110_2.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 110")
-#binary_plot(one2two(yhat_126), "out/y_hat_126_2.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 126")
+binary_plot(one2two(yhat_110), "out/task24/y_hat_110_2.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 110")
+binary_plot(one2two(yhat_126), "out/task24/y_hat_126_2.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 126")
