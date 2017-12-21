@@ -51,8 +51,8 @@ x=[]
 y=[]
 for i in range(len(w)):
     if w[i]>0:
-        x.append(w[i])
-        y.append(h[i])
+        y.append(w[i])
+        x.append(h[i])
 ########## calculate W ############
 for d in [1,5,10]:
     X=np.zeros((len(x),d))
