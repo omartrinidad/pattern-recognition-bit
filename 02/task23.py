@@ -25,7 +25,7 @@ def bayesian_regression(x, y, d, var_o):
 
 # Importing dataset
 ## Dataset path
-dataset_path = 'whData.dat'
+dataset_path = 'data/whData.dat'
 ## Column names
 dt = np.dtype([('w', np.float), ('h', np.float), ('g', np.str_, 1)])
 ## Loading the dataset
@@ -80,5 +80,5 @@ plt.plot(regressionX, yb, 'g-', label='Bayesian Regression')
 plt.xlim(np.amin(train_data)-5, np.amax(train_data)+5)
 plt.ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
 plt.legend(loc='lower right')
-
+plt.savefig("out/task23/bayesian_regression.png", bbox_inches="tight", pad_inches=0)
 plt.show()

@@ -9,7 +9,7 @@ def gauss(x,y):
 
 # Importing dataset
 ## Dataset path
-dataset_path = 'whData.dat'
+dataset_path = 'data/whData.dat'
 ## Column names
 dt = np.dtype([('w', np.float), ('h', np.float), ('g', np.str_, 1)])
 ## Loading the dataset
@@ -63,4 +63,5 @@ plt.contour(x,y,zi)
 plt.xlim(np.amin(train_data)-5, np.amax(train_data)+5)
 plt.ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
 plt.legend(loc='upper left')
+plt.savefig("out/task22/bivariate_gaussian.png", bbox_inches="tight", pad_inches=0)
 plt.show()
