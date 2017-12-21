@@ -18,15 +18,15 @@ def draw_plot(X,y,nX,ny,mx,my):
     # create a figure and its axes
     fig = plt.figure()
     axs = fig.add_subplot(111)
-    axs.set_xlabel('Height')
+    axs.set_xlabel('Weight')
     axs.xaxis.label.set_color('blue')
-    axs.set_ylabel('Weight')
+    axs.set_ylabel('Height')
     axs.yaxis.label.set_color('blue')
     
     # plot the data 
     axs.plot(X[:,1], y, 'ro', label='data')
     axs.plot(nX[:,1], ny, label='Least Squares Regression')
-    axs.plot(mx,my, 'ro',c= 'blue',  label='Predict outliers')
+    axs.plot(mx,my, 'ro',c= 'green',  label='Predict outliers')
     
     axs.tick_params(axis='x', labelsize=13)
     axs.tick_params(axis='y', labelsize=13)
@@ -43,7 +43,7 @@ def lsq_solution(X, y):
     return w
 ########## reading data #########
 dt = np.dtype([('weight', np.float), ('height', np.float), ('gender', np.str_, 1)])
-data = np.loadtxt('whData.dat', dtype=dt, comments='#', delimiter=None)
+data = np.loadtxt('data/whData.dat', dtype=dt, comments='#', delimiter=None)
 
 w = np.array([d[0] for d in data])
 h = np.array([d[1] for d in data])
@@ -67,13 +67,20 @@ for d in [1,5,10]:
     mx=[]
     my=[]
     for i in range(len(w)):
-        if w[i]<=0:            
-            pw=0
-            for ik,k in enumerate(W):
-                pw+=k*(h[i]**ik)
-            mx.append(h[i])
-            my.append(pw)
-            print  ("weight: " ,pw, "height: ",h[i])
+        if w[i]<=0:
+            minDif=h[i]
+            nw=W[0]
+            for j in range(int(X[:,1].min()),int(X[:,1].max())):
+                pw=0
+                for ik,k in enumerate(W):
+                    pw+=k*(j**ik)
+                if abs(h[i]-pw)<minDif:
+                    minDif=abs(h[i]-pw)
+                    nw=j
+            mx.append(nw)
+            my.append(h[i])
+            print  ("weight: " ,nw, "height: ",h[i])
+    print("dgree is ", ik)
             
 ########### producing new data #######
     

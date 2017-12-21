@@ -14,10 +14,10 @@ line_width = [4., 3.5, 3., 2.5, 2., 1.5, 1., .5, 0.3]
 depth_dict = {}
 
 def main():
-	testData = np.loadtxt('data2-test.dat',dtype=np.object,comments='#',\
+	testData = np.loadtxt('data/data2-test.dat',dtype=np.object,comments='#',\
 		delimiter=None)
 
-	trainData = np.loadtxt('data2-train.dat',dtype=np.object,comments='#',\
+	trainData = np.loadtxt('data/data2-train.dat',dtype=np.object,comments='#',\
 		delimiter=None)
 	kNN(testData,trainData,k)	# uses SciPy to evaluate the run-time with nearest-neighbours
 	
@@ -66,8 +66,8 @@ def kNN(testData, trainData, k):
 	print "Time elapsed: %.3f seconds"%elapsed
 	print "Correct classification rate:  %.2f%%" % (corr_rate / total_sum * 100.0)
 	print "------------------------------------------------------------"
-	plot_data(x_test,y_test,z_result,"Classification results")
-	plot_data(x_test,y_test,labels_test,"Test data")
+	plot_data(x_test,y_test,z_result,"Classification results", "out/kdtree/classification.png")
+	plot_data(x_test,y_test,labels_test,"Test data", "out/kdtree/test.png")
 
 
 
@@ -91,6 +91,7 @@ def draw_plot(tree, test_data_points):
 	plot_tree(tree, min_x_val-delta, max_x_val+delta, min_y_val-delta, max_y_val+delta, None, None)
  
 	plt.title('K-D Tree')
+        plt.savefig("out/kdtree/kdtree.png", bbox_inches="tight", pad_inches=0)
 	plt.show()
 	plt.close()	
 
@@ -178,11 +179,12 @@ def column(matrix, i):
 def point_list(matrix):
 	return np.asarray([(float(row[0]),float(row[1])) for row in matrix])
 
-def plot_data(x,y,z,title):
+def plot_data(x,y,z,title, path):
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	ax.set_title(title)
 	ax.scatter(x,y,c=z,s=100)
+        plt.savefig(path, bbox_inches="tight", pad_inches=0)
 	plt.show();
 
 if __name__ == "__main__":

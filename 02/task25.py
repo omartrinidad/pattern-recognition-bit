@@ -4,10 +4,15 @@ import matplotlib.pyplot as plt
 import time
 
 def main():
-	trainData = np.loadtxt('data2-train.dat',dtype=np.object,comments='#',delimiter=None)
-	testData = np.loadtxt('data2-test.dat',dtype=np.object,comments='#',delimiter=None)
+	trainData = np.loadtxt('data/data2-train.dat',dtype=np.object,comments='#',delimiter=None)
+	testData = np.loadtxt('data/data2-test.dat',dtype=np.object,comments='#',delimiter=None)
 	
-	kNN(testData,trainData,1)
+        print("k = 1")
+	kNN(testData, trainData, 1)
+        print("k = 3")
+	kNN(testData, trainData, 3)
+        print("k = 5")
+	kNN(testData, trainData, 5)
 
 
 def kNN(testData, trainData, k):
@@ -50,8 +55,8 @@ def kNN(testData, trainData, k):
 	print "Time elapsed: %.3f seconds"%elapsed
 	print "Correct classification rate:  %.2f%%" % (corr_rate / total_sum * 100.0)
 	print "------------------------------------------------------------"
-	plotData(x_test,y_test,z_result,"Classification results")
-	plotData(x_test,y_test,labels_test,"Test data")
+	plotData(x_test,y_test,z_result,"Classification results k={}".format(k), k=k)
+	plotData(x_test,y_test,labels_test,"Test data k={}".format(k))
 
 
 
@@ -59,12 +64,14 @@ def kNN(testData, trainData, k):
 def column(matrix, i):
 	return [float(row[i]) for row in matrix]
 
-def plotData(x,y,z,title):
+def plotData(x,y,z,title, k=None):
 	fig = plt.figure()
 	ax = fig.add_subplot(111)
 	ax.set_title(title)
 	z = ['green' if i > 0 else 'red' for i in z]
 	ax.scatter(x,y,c=z,s=100)
+        if k:
+            plt.savefig("out/knn/knn{}.png".format(k), bbox_inches="tight", pad_inches=0)
 	plt.show();
 
 
@@ -72,4 +79,3 @@ def plotData(x,y,z,title):
 
 if __name__ == "__main__":
 	main()
-	
