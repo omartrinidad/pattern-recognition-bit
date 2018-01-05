@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# binary file
+03/out
+
 # Distribution / packaging
 .Python
 env/
