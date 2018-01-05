@@ -4,9 +4,9 @@ import matplotlib.pyplot as plt
 import time
 from collections import namedtuple
 
-#Reference made to this website: 
-#	https://salzis.wordpress.com/2014/06/28/kd-tree-and-nearest-neighbor-nn-search-2d-case/
-#	as well as Wikipedia
+# Reference made to this website: 
+# https://salzis.wordpress.com/2014/06/28/kd-tree-and-nearest-neighbor-nn-search-2d-case/
+# as well as Wikipedia
 
 Node = namedtuple('Node','split left right')
 k = 2
@@ -60,12 +60,12 @@ def kNN(testData, trainData, k):
 		total_sum += 1.0
 	
 	end = time.time()
-	print z_result
+	print(z_result)
 	elapsed = end-start
-	print "--------------------------RESULTS---------------------------"
-	print "Time elapsed: %.3f seconds"%elapsed
-	print "Correct classification rate:  %.2f%%" % (corr_rate / total_sum * 100.0)
-	print "------------------------------------------------------------"
+	#print "--------------------------RESULTS---------------------------"
+	#print "Time elapsed: %.3f seconds"%elapsed
+	#print "Correct classification rate:  %.2f%%" % (corr_rate / total_sum * 100.0)
+	#print "------------------------------------------------------------"
 	plot_data(x_test,y_test,z_result,"Classification results", "out/kdtree/classification.png")
 	plot_data(x_test,y_test,labels_test,"Test data", "out/kdtree/test.png")
 
@@ -74,26 +74,25 @@ def kNN(testData, trainData, k):
 
 
 def draw_plot(tree, test_data_points):
-# n = 50        # number of points
-	min_x_val = int(min(np.minimum(column(test_data_points,0), column(test_data_points,0))) )  # minimal coordinate value
-	max_x_val = int(max(np.maximum(column(test_data_points,0), column(test_data_points,0))) )  # maximal coordinate value
+    # n = 50        # number of points
+    min_x_val = int(min(np.minimum(column(test_data_points,0), column(test_data_points,0))) )  # minimal coordinate value
+    max_x_val = int(max(np.maximum(column(test_data_points,0), column(test_data_points,0))) )  # maximal coordinate value
+    
+    min_y_val = int(min(np.minimum(column(test_data_points,1), column(test_data_points,1))) )  # minimal coordinate value
+    max_y_val = int(max(np.maximum(column(test_data_points,1), column(test_data_points,1))) )  # maximal coordinate value
+    delta = 2
+    plt.figure("K-d Tree")
+    plt.grid(b=True, which='major', color='0.75', linestyle='--')
+    plt.axis( [min_x_val-delta, max_x_val+delta, min_y_val-delta, max_y_val+delta] )
+    
+    # draw the tree
+    plot_tree(tree, min_x_val-delta, max_x_val+delta, min_y_val-delta, max_y_val+delta, None, None)
+    
+    plt.title('K-D Tree')
+    plt.savefig("out/kdtree/kdtree.png", bbox_inches="tight", pad_inches=0)
+    plt.show()
+    plt.close()	
 
-	min_y_val = int(min(np.minimum(column(test_data_points,1), column(test_data_points,1))) )  # minimal coordinate value
-	max_y_val = int(max(np.maximum(column(test_data_points,1), column(test_data_points,1))) )  # maximal coordinate value
-
- 	delta = 2
-
-	plt.figure("K-d Tree")
-	plt.grid(b=True, which='major', color='0.75', linestyle='--')
-	plt.axis( [min_x_val-delta, max_x_val+delta, min_y_val-delta, max_y_val+delta] )
- 
-	# draw the tree
-	plot_tree(tree, min_x_val-delta, max_x_val+delta, min_y_val-delta, max_y_val+delta, None, None)
- 
-	plt.title('K-D Tree')
-        plt.savefig("out/kdtree/kdtree.png", bbox_inches="tight", pad_inches=0)
-	plt.show()
-	plt.close()	
 
 def kd_tree_build(data_points,depth,mode='alternate',split='median'):
 	if data_points.shape[0] == 0 : 
@@ -115,16 +114,15 @@ def kd_tree_build(data_points,depth,mode='alternate',split='median'):
 
 	if split=='median':
 		sorted_points = data_points[np.argsort(data_points[:,d])]
-	
-		x_i = sorted_points[len(sorted_points)/2]
-		_data_points_right = sorted_points[len(sorted_points)/2+1:\
-		len(sorted_points)]
-		_data_points_left = sorted_points[0:len(sorted_points)/2]
+		x_i = sorted_points[int(len(sorted_points)/2)]
+		_data_points_right = sorted_points[
+                        int(len(sorted_points)/2+1) : int(len(sorted_points))
+                        ]
+		_data_points_left = sorted_points[0: int(len(sorted_points)/2)]
 	elif split=='centre':
 		x_i = data_points[len(data_points)/2]
-		_data_points_right = data_points[len(data_points)/2+1:\
-		len(data_points)]
-		_data_points_left = data_points[0:len(data_points)/2]
+		_data_points_right = data_points[len(data_points)/2+1:\ int(len(data_points))]
+		_data_points_left = data_points[0:int(len(data_points)/2)]
 	
 	return Node(x_i, kd_tree_build(_data_points_left,depth+1),\
 		kd_tree_build(_data_points_right,depth+1))
@@ -180,13 +178,13 @@ def point_list(matrix):
 	return np.asarray([(float(row[0]),float(row[1])) for row in matrix])
 
 def plot_data(x,y,z,title, path):
-	fig = plt.figure()
-	ax = fig.add_subplot(111)
-	ax.set_title(title)
-	ax.scatter(x,y,c=z,s=100)
-        plt.savefig(path, bbox_inches="tight", pad_inches=0)
-	plt.show();
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.set_title(title)
+    ax.scatter(x,y,c=z,s=100)
+    plt.savefig(path, bbox_inches="tight", pad_inches=0)
+    plt.show()
 
 if __name__ == "__main__":
-	main()
-	
+    main()
+    

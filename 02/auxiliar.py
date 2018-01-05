@@ -5,6 +5,7 @@ Auxiliar functions with dirty tricks to deal with plots, timing, etc.
 """
 
 from matplotlib2tikz import save as tikz_save
+import time
 
 
 def measure_time(func):

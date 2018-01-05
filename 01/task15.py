@@ -12,6 +12,7 @@ import numpy.linalg as la
 
 from scipy import misc
 from scipy.stats import linregress
+from auxiliar import *
 
 
 def data_matrix_V1(x):
@@ -49,7 +50,8 @@ def foreground2BinImg(f):
     return img.morphology.binary_closing(d)
 
 
-def plot_both_models(image1, image2, path, extra=True, save=False, show=False, title=""):
+@save_figure()
+def plot_both_models(image1, image2, path="", extra=True, save=False, show=False, title=""):
     """
     Function that plots two models and make a comparison
     """
@@ -98,11 +100,12 @@ def plot_both_models(image1, image2, path, extra=True, save=False, show=False, t
     #    ax.set_yscale('log')
 
     plt.legend()
+    #if save:
+    #    plt.savefig(path + "both_plots.png", bbox_inches="tight", pad_inches=0)
+    #if show:
+    #    plt.show()
 
-    if save:
-        plt.savefig(path + "both_plots.png", bbox_inches="tight", pad_inches=0)
-    if show:
-        plt.show()
+    return plt
 
 
 def plotting(x, y, path, extra=True, save=False, show=False, title=""):
@@ -115,7 +118,6 @@ def plotting(x, y, path, extra=True, save=False, show=False, title=""):
     fig = plt.figure(figsize=(5, 3))
     ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])
     ax.plot( x, y, 'ro', lw=2)
-
 
     # fit a line
     lr = linregress(x, y)
@@ -205,6 +207,8 @@ def generate_images(image, path, show=True, save=False):
     image_bin = foreground2BinImg(image)
     image_bin = np.logical_not(image_bin)
 
+    misc.imsave(path + "_binary.png", image_bin)
+
     ns = np.linspace(1, 7, 7).astype(np.int)
     scaling_factors = 2 ** ns
     boxes_by_scale = []
@@ -214,7 +218,7 @@ def generate_images(image, path, show=True, save=False):
         boxes_by_scale.append(count)
 
         if save:
-            misc.imsave(path + "_{}.png".format(count), boxes)
+            misc.imsave(path + "_{}.png".format(count), scale)
         if show:
             misc.imshow(boxes)
 
@@ -249,4 +253,5 @@ plotting(log_1_si, log_ni, path + "_points.png", extra=False, show=True, title="
 
 # Plot to compare both models
 path = 'out/'
-plot_both_models(tree2, light3, path, extra=True, save=False, show=True, title="")
+
+plot_both_models(tree2, light3, path="latex/both.tex", extra=True, save=False, show=True, title="")

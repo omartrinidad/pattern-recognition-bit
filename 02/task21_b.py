@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib2tikz import save as tikz_save
 
 def vandermonde(x, d):
   # Expanding x in Vandermonde Matrix: f(x) = 1 + x + x^2 ... + x^d
@@ -41,6 +42,7 @@ fig, ax = plt.subplots(1, len(d), sharey=True)
 # Data mean(mu) and standard deviation (sigma)
 mu = train_data.mean()
 sigma = train_data.std()
+
 for i in range(len(d)):
   # Standardize the data
   X_train = (train_data - mu) / sigma
@@ -65,9 +67,11 @@ for i in range(len(d)):
   ax[i].set_xlim(np.amin(train_data)-5, np.amax(train_data)+5)
   ax[i].set_ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
   ax[i].set_title("d = " + str(d[i]))
+  plt.show()
 
-fig.legend((l1, l2, l3), ('Data', 'Polynomial fitted line', 'Predictions'), 'lower right')
-fig.text(0.5, 0.04, 'Height', ha='center')
-fig.text(0.04, 0.5, 'Weight', va='center', rotation='vertical')
-plt.savefig("out/regression/plots.png", bbox_inches="tight", pad_inches=0)
-plt.show()
+
+#fig.legend((l1, l2, l3), ('Data', 'Polynomial fitted line', 'Predictions'), 'lower right')
+#fig.text(0.5, 0.04, 'Height', ha='center')
+#fig.text(0.04, 0.5, 'Weight', va='center', rotation='vertical')
+#plt.savefig("out/regression.png", bbox_inches="tight", pad_inches=0)
+#tikz_save("latex/regression.tex")

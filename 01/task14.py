@@ -16,8 +16,8 @@ import numpy as np
 from auxiliar import *
 
 
-@save_figure("out/unityball.png")
-def unitball(p):
+@save_figure()
+def unitball(p, path=""):
     """
     """
 
@@ -49,7 +49,7 @@ def unitball(p):
     return plt
 
 
-unitball(0.5)
+unitball(0.5, path="latex/unit_ball.tex")
 
 
 # By picking any two vectors; i.e. (x1, y1) = (0, 1) and (x2, y2) = (1, 0). Then

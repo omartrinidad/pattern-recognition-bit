@@ -1,7 +1,7 @@
 import numpy as np
-import sympy as sp
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
+from matplotlib2tikz import save as tikz_save
 
 def gauss(x,y):
   exp_term = -1.0/(2*(1-corr_hw**2))*((x-mean_h)**2/var_h+(y-mean_w)**2/var_w-2*corr_hw*(x-mean_h)*(y-mean_w)/(std_h*std_w))
@@ -54,14 +54,15 @@ plt.plot(test_data, f(test_data), 'r.', label='Predictions')
 # Plot the model
 ## Grid XY points to build contour
 x = np.linspace(np.amin(train_data)-5, np.amax(train_data)+5, 1000)
-y = np.linspace(np.amin(train_labels)-5, np.amax(train_labels)+5, 1000)
+y = np.linspace(np.amin(train_labels)-8, np.amax(train_labels)+7, 1000)
 X, Y = np.meshgrid(x, y)
 zi = mlab.bivariate_normal(X, Y, std_h, std_w, mean_h, mean_w, covariance_matrix[0, 1])
 ## Contour the gridded data
 plt.contour(x,y,zi)
 
 plt.xlim(np.amin(train_data)-5, np.amax(train_data)+5)
-plt.ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
+plt.ylim(np.amin(train_labels)-8, np.amax(train_labels)+7)
 plt.legend(loc='upper left')
 plt.savefig("out/task22/bivariate_gaussian.png", bbox_inches="tight", pad_inches=0)
+tikz_save("latex/expectation.tex")
 plt.show()

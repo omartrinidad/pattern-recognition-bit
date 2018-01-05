@@ -1,10 +1,11 @@
 import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
+from auxiliar import *
 
 
-
-def plotData2D(X, filename=None):
+@save_figure()
+def plotData2D(X, path = ""):
 
     # create a figure and its axes
     fig = plt.figure()
@@ -27,16 +28,7 @@ def plotData2D(X, filename=None):
     leg.get_frame().set_alpha(0.5)
 
     # either show figure on screen or write it to disk
-    if filename == None:
-        plt.show()
-    else:
-        plt.savefig(filename, facecolor='w', edgecolor='w',
-                    papertype=None, format='pdf', transparent=False,
-                    bbox_inches='tight', pad_inches=0.1)
-    plt.close()
-
-
-
+    return plt
 
 
 if __name__ == "__main__":
@@ -74,7 +66,7 @@ if __name__ == "__main__":
     X = X.T
 
     # now, plot weight vs. height using the function defined above
-    plotData2D(X, 'out/plotWH.pdf')
+    plotData2D(X, path="latex/outliers1.tex")
 
     # next, let's plot height vs. weight
     # first, copy information rows of X into 1D arrays
@@ -85,5 +77,4 @@ if __name__ == "__main__":
     Z = np.vstack((h,w))
 
     # third, plot this new representation of the data
-    plotData2D(Z, 'out/plotHW.pdf')
-
+    plotData2D(Z, path="latex/outliers2.tex")

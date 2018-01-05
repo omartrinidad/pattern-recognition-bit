@@ -2,6 +2,7 @@ import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
+from matplotlib2tikz import save as tikz_save
 
 def updateParams(k, alpha, N,sum_log_di, x, h):
 
@@ -41,10 +42,10 @@ if __name__ == "__main__":
     sum_log_di = np.sum(np.multiply(np.log(x), h))
     for i in range(0,20):
         k,alpha = updateParams(k, alpha, N, sum_log_di, x, h)
-        print i
-        print k
-        print alpha
-        print "________"
+        #print i
+        #print k
+        #print alpha
+        #print "________"
 
     x_1 = np.linspace(1,500,2500)
     fig = plt.figure()
@@ -52,4 +53,5 @@ if __name__ == "__main__":
     y = N * (k/alpha) * np.multiply(np.power(np.divide(x_1,alpha), k-1), np.exp(-1.0* np.power(np.divide(x_1,alpha), k)))
     axs.plot(x_1,y, 'b')
     axs.plot(x, h, 'g')
+    tikz_save("latex/fit_weibull.tex")
     plt.show()

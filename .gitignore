@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+# personal folders
+01/latex/*
+02/latex/*
+01/out/*
+02/out/*
+
 # Distribution / packaging
 .Python
 env/

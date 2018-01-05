@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from auxiliar import *
 
 def vandermonde(x, d):
   # Expanding x in Vandermonde Matrix: f(x) = 1 + x + x^2 ... + x^d
@@ -71,14 +72,18 @@ predictionsb = X_test * Wb
 
 # Plot the results
 ## Plot the data
-plt.plot(train_data, train_labels, 'k.', label='Data')
-## Plot the polynomial fitted line
-plt.plot(regressionX, yp, 'b-', label='Polynomial Fit')
-## plot the bayesian fitted line
-plt.plot(regressionX, yb, 'g-', label='Bayesian Regression')
-## Setting axes limits
-plt.xlim(np.amin(train_data)-5, np.amax(train_data)+5)
-plt.ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
-plt.legend(loc='lower right')
-plt.savefig("out/task23/bayesian_regression.png", bbox_inches="tight", pad_inches=0)
-plt.show()
+@save_figure()
+def plot(path=""):
+    plt.plot(train_data, train_labels, 'k.', label='Data')
+    ## Plot the polynomial fitted line
+    plt.plot(regressionX, yp, 'b-', label='Polynomial Fit')
+    ## plot the bayesian fitted line
+    plt.plot(regressionX, yb, 'g-', label='Bayesian Regression')
+    ## Setting axes limits
+    plt.xlim(np.amin(train_data)-5, np.amax(train_data)+5)
+    plt.ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
+    plt.legend(loc='lower right')
+    #plt.savefig("out/task23/bayesian_regression.png", bbox_inches="tight", pad_inches=0)
+    return plt
+
+plot(path="latex/bayes.tex")
