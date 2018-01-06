@@ -7,6 +7,8 @@ __pycache__/
 *.so
 
 # binary file
+01/out
+02/out
 03/out
 
 # Distribution / packaging
