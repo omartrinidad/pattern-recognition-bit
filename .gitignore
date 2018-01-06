@@ -9,8 +9,12 @@ __pycache__/
 # personal folders
 01/latex/*
 02/latex/*
+03/latex/*
+
+# binary files
 01/out/*
 02/out/*
+03/out/*
 
 # Distribution / packaging
 .Python
