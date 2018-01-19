@@ -38,13 +38,13 @@ regressionX = np.linspace(np.amin(train_data)-5, np.amax(train_data)+5, 1000)
 
 # Polynomial fitting for d = {1, 5, 10}
 d = [1, 5, 10]
-fig, ax = plt.subplots(1, len(d), sharey=True)
 # Data mean(mu) and standard deviation (sigma)
 mu = train_data.mean()
 sigma = train_data.std()
 
 for i in range(len(d)):
   # Standardize the data
+  fig, ax = plt.subplots(1, 1, sharey=True)
   X_train = (train_data - mu) / sigma
   # Calculating the coefficients (weights) of the polynomial fitted line
   W = polynomial_regression(X_train, train_labels, d[i])
@@ -58,20 +58,20 @@ for i in range(len(d)):
   predictions = X_test * W
   # Plot the results
   ## Plot the data
-  l1, = ax[i].plot(train_data, train_labels, 'k.')
+  l1, = ax.plot(train_data, train_labels, 'k.')
   ## Plot the model line
-  l2, = ax[i].plot(regressionX, y, 'b-')
+  l2, = ax.plot(regressionX, y, 'b-')
   ## plot the predictions
-  l3, = ax[i].plot(test_data, predictions, 'r.')
+  l3, = ax.plot(test_data, predictions, 'r.')
   ## Setting axes limits and title
-  ax[i].set_xlim(np.amin(train_data)-5, np.amax(train_data)+5)
-  ax[i].set_ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
-  ax[i].set_title("d = " + str(d[i]))
+  ax.set_xlim(np.amin(train_data)-5, np.amax(train_data)+5)
+  ax.set_ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
+  ax.set_title("d = " + str(d[i]))
+
+  #fig.legend((l1, l2, l3), ('Data', 'Polynomial fitted line', 'Predictions'), 'lower right')
+  fig.text(0.5, 0.04, 'Height', ha='center')
+  fig.text(0.04, 0.5, 'Weight', va='center', rotation='vertical')
+
+  plt.savefig("out/01/regression_d_{}.png".format(i), bbox_inches="tight", pad_inches=0)
+  tikz_save("latex/regression_d_{}.tex".format(i))
   plt.show()
-
-
-#fig.legend((l1, l2, l3), ('Data', 'Polynomial fitted line', 'Predictions'), 'lower right')
-#fig.text(0.5, 0.04, 'Height', ha='center')
-#fig.text(0.04, 0.5, 'Weight', va='center', rotation='vertical')
-#plt.savefig("out/regression.png", bbox_inches="tight", pad_inches=0)
-#tikz_save("latex/regression.tex")
