@@ -28,7 +28,7 @@ Y = np.genfromtxt("data/xor-y.csv", dtype=float, delimiter=',')
 # initialize weights, and theta, and learning rate
 theta = np.random.uniform(low=-0.75, high=0.75)
 w = np.random.uniform(low=-0.75, high=0.75, size=(2))
-learning_rate = 0.001
+learning_rate = 0.00075
 
 for e in range(30):
 
@@ -38,7 +38,7 @@ for e in range(30):
 
     # for x, y in unison_shuffled(X, Y):
     # random batch, size 5
-    for i in np.random.choice(200, 100):
+    for i in np.random.choice(200, 200):
 
         x = X[i]
         y = Y[i]
@@ -60,7 +60,6 @@ for e in range(30):
         fig = plt.figure()
         Yhat = [non_monotone(X[i], w, theta) for i in range(len(Y))]
         Yhat = np.where(np.array(Yhat) > 0, 1, -1)
-
 
         correct_predictions = np.sum(Yhat == Y)
         plt.title(correct_predictions)
