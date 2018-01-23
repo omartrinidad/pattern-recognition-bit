@@ -28,18 +28,16 @@ Y = np.genfromtxt("data/xor-y.csv", dtype=float, delimiter=',')
 # initialize weights, and theta, and learning rate
 theta = np.random.uniform(low=-0.75, high=0.75)
 w = np.random.uniform(low=-0.75, high=0.75, size=(2))
-learning_rate = 0.00075
+learning_rate = 0.00125
 
 for e in range(30):
 
     upd_theta = 0
     upd_weight = 0
-    upd_error = 0
 
-    # for x, y in unison_shuffled(X, Y):
     # random batch, size 5
+    # for x, y in unison_shuffled(X, Y):
     for i in np.random.choice(200, 200):
-
         x = X[i]
         y = Y[i]
 
@@ -51,7 +49,6 @@ for e in range(30):
 
         upd_weight += dis * 2 * exp * wx  * x * -1
         upd_theta += dis * 2 * exp * wx
-        upd_error += 0.005 * (dis ** 2)
 
     w = w - learning_rate * upd_weight
     theta = theta - learning_rate * upd_theta
