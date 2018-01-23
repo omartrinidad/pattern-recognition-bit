@@ -4,6 +4,7 @@
 import numpy as np
 import time
 import matplotlib.pyplot as plt
+from matplotlib2tikz import save as tikz_save
 from kmeans import KMeans
 
 
@@ -83,8 +84,11 @@ ax.plot(hartigan_times, 'g', lw=2,  label=r'Hartigan')
 
 ax.set_xlabel(r'K means', size=14)
 ax.set_ylabel(r'Time', size=14)
-ax.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=1, mode="expand", borderaxespad=0., fontsize=12)
+
+plt.legend(loc='upper left')
 
 plt.xticks(range(len(ks)), ks, rotation="vertical")
+#path = "latex/timing_kmeans.tex"
+#tikz_save(path)
 plt.savefig("out/plot_times.png", bbox_inches='tight')
 plt.show()
