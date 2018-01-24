@@ -3,6 +3,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.colors as colors
 import numpy.linalg.linalg as lg
 
 from matplotlib2tikz import save as tikz_save
@@ -64,6 +65,14 @@ for e in range(51):
         correct_predictions = np.sum(Yhat == Y)
         plt.title(correct_predictions)
         plt.scatter(X[:,0], X[:,1], c = Yhat);
+
+        x = np.linspace(np.amin(X[:,0])-0.1, np.amax(X[:,0])+0.1, 1000)
+        y = np.linspace(np.amin(X[:,1])-0.1, np.amax(X[:,1])+0.1, 1000)
+        CX, CY = np.meshgrid(x, y)
+        zi = non_monotone(np.vstack((CX.ravel(),CY.ravel())), w, theta).reshape((1000,1000))
+        cmap = colors.LinearSegmentedColormap.from_list("", ["blue","white","orange"])
+        plt.contourf(x,y,zi, alpha=0.2, levels=np.linspace(np.amin(zi.ravel()), np.amax(zi.ravel()), 101), cmap=cmap, antialiased = True)
+
         plt.show()
 
         if correct_predictions == 200:
