@@ -25,19 +25,23 @@ def non_monotone(x, w, theta):
 X = np.genfromtxt("data/xor-X.csv", dtype=float, delimiter=',').T
 Y = np.genfromtxt("data/xor-y.csv", dtype=float, delimiter=',')
 
+n_examples = X.shape[0]
+
 # initialize weights, and theta, and learning rate
 theta = np.random.uniform(low=-0.75, high=0.75)
 w = np.random.uniform(low=-0.75, high=0.75, size=(2))
 learning_rate = 0.00125
+eta_w = 0.005
+eta_theta = 0.001
 
-for e in range(30):
+for e in range(51):
 
     upd_theta = 0
     upd_weight = 0
 
     # random batch, size 5
     # for x, y in unison_shuffled(X, Y):
-    for i in np.random.choice(200, 200):
+    for i in np.arange(n_examples):
         x = X[i]
         y = Y[i]
 
@@ -46,12 +50,11 @@ for e in range(30):
 
         wx = np.dot(w.T, x) - theta
         exp = np.exp(-0.5 * np.square(wx))
-
         upd_weight += dis * 2 * exp * wx  * x * -1
         upd_theta += dis * 2 * exp * wx
 
-    w = w - learning_rate * upd_weight
-    theta = theta - learning_rate * upd_theta
+    w = w - eta_w * upd_weight
+    theta = theta - eta_theta * upd_theta
 
     if e % 2 == 0:
         fig = plt.figure()
