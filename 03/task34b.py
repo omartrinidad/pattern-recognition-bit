@@ -41,7 +41,7 @@ zi = applyL2SVMPolyKernel(np.vstack((CX.ravel(),CY.ravel())), XS, ys, ms, w0, d=
 zi = np.sign(zi).reshape((1000,1000))
 cmap = colors.LinearSegmentedColormap.from_list("", ["blue","white","orange"])
 plt.contourf(x,y,zi, alpha=0.2, levels=np.linspace(np.amin(zi.ravel()), np.amax(zi.ravel()), 101), cmap=cmap, antialiased = True)
-
+plt.savefig("out/04/kernel_svm_classroom.png", bbox_inches="tight", pad_inches=0)
 plt.show()
 
 
@@ -57,8 +57,6 @@ CX, CY = np.meshgrid(x, y)
 zi = clf.predict(np.vstack((CX.ravel(),CY.ravel())).T).reshape((1000,1000))
 cmap = colors.LinearSegmentedColormap.from_list("", ["blue","white","orange"])
 plt.contourf(x,y,zi, alpha=0.2, levels=np.linspace(np.amin(zi.ravel()), np.amax(zi.ravel()), 101), cmap=cmap, antialiased = True)
+plt.savefig("out/04/kernel_svm_sklearn.png", bbox_inches="tight", pad_inches=0)
 
 plt.show()
-
-
-

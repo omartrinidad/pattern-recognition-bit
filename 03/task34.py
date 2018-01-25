@@ -4,10 +4,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
-import numpy.linalg.linalg as lg
-
-from matplotlib2tikz import save as tikz_save
-from matplotlib.animation import FuncAnimation
 
 
 def unison_shuffled(a, b):
@@ -29,22 +25,20 @@ Y = np.genfromtxt("data/xor-y.csv", dtype=float, delimiter=',')
 n_examples = X.shape[0]
 
 # initialize weights, and theta, and learning rate
-theta = np.random.uniform(low=-0.75, high=0.75)
-w = np.random.uniform(low=-0.75, high=0.75, size=(2))
-learning_rate = 0.00125
+theta = np.random.uniform(low=-0.99, high=0.99)
+w = np.random.uniform(low=-0.99, high=0.99, size=(2))
+
 eta_w = 0.005
 eta_theta = 0.001
 
-for e in range(51):
+for e in range(30):
 
     upd_theta = 0
     upd_weight = 0
 
-    # random batch, size 5
-    # for x, y in unison_shuffled(X, Y):
-    for i in np.arange(n_examples):
-        x = X[i]
-        y = Y[i]
+    # random batch 
+    for x, y in unison_shuffled(X, Y):
+    # for i in np.arange(n_examples):
 
         yhat = non_monotone(x, w, theta)
         dis = yhat - y
@@ -73,7 +67,8 @@ for e in range(51):
         cmap = colors.LinearSegmentedColormap.from_list("", ["blue","white","orange"])
         plt.contourf(x,y,zi, alpha=0.2, levels=np.linspace(np.amin(zi.ravel()), np.amax(zi.ravel()), 101), cmap=cmap, antialiased = True)
 
-        plt.show()
-
         if correct_predictions == 200:
+            plt.savefig("out/04/convergence_neuron.png", bbox_inches="tight", pad_inches=0)
             break
+
+        plt.show()

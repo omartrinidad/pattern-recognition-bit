@@ -5,8 +5,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import cdist
 
+from matplotlib import rc
+rc("text", usetex=True)
 
-def plot(X, clusters, title=None):
+def plot(X, clusters, title=None, path=None):
     """
     """
     clusters = np.where(clusters == 1, "#ee2222", "#2222ee")
@@ -15,6 +17,9 @@ def plot(X, clusters, title=None):
 
     if title:
         plt.title(title)
+
+    if path:
+        plt.savefig(path, bbox_inches="tight", pad_inches=0, figsize=(30,60))
 
     plt.show()
 
@@ -41,5 +46,6 @@ X = np.genfromtxt('data/data-clustering-2.csv', dtype=float, delimiter=',').T
 
 for i in [1, 3, 5, 7]:
     clusters = spectral(X, i)
-    plot(X, clusters, "Beta {}".format(i))
+    path = "out/02/beta{}.png".format(i)
+    plot(X, clusters, r"$\beta$ = {}".format(i), path)
 
