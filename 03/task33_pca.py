@@ -5,6 +5,7 @@ import numpy as np
 import numpy.linalg as la
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib2tikz import save as tikz_save
 
 # load data
 X = np.genfromtxt("data/data-dimred-X.csv", dtype=float, delimiter=',').T
@@ -32,7 +33,10 @@ z = np.dot(normalized, eivec[:3].T)
 # for plotting
 z = z.T 
 
+fig = plt.figure()
 plt.scatter(z[0], z[1], c=y)
+#path="latex/pca_2d.tex"
+#tikz_save(path)
 plt.savefig("out/03/pca_2d.png", bbox_inches="tight", pad_inches=0)
 plt.show()
 
@@ -40,5 +44,7 @@ plt.show()
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.scatter3D(z[0], z[1], z[2], c=y);
+#path="latex/pca_3d.tex"
+#tikz_save(path)
 plt.savefig("out/03/pca_3d.png", bbox_inches="tight", pad_inches=0)
 plt.show()

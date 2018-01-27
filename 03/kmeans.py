@@ -175,6 +175,7 @@ class KMeans(object):
             for c in self.clusters:
                 # get the sum of each column (dimension)
                 total = np.sum(self.dataset[self.clusters[c]], axis=0)
+                print(self.dataset[self.clusters[c]].shape[0])
                 total = total/self.dataset[self.clusters[c]].shape[0]
                 # update the centroids
                 self.centroids[c] = total

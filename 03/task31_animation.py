@@ -38,7 +38,7 @@ class Animation(Frame):
         self.canvas.config(width=width, height=height)
         self.canvas.delete("all")
 
-        min, max = -4, 4
+        min, max = 4, -4
         range_data = max - min
         step = float(self.w_size)/range_data
 
@@ -80,7 +80,7 @@ class Animation(Frame):
 
 dataset = np.genfromtxt(
             "data/data-clustering-1.csv", dtype=float,
-            delimiter=',', 
+            delimiter=',',
             #usecols = (0, 1, 2, 3)
             )
 
@@ -88,9 +88,6 @@ dataset = np.genfromtxt(
 # initialize centroids
 dataset = dataset.T
 np.random.shuffle(dataset)
-
-#dataset = np.array([[5, 5], [10, 5], [5, 10], [10, 10]])
-#dataset = np.array([[-3, -3], [-2, -2], [-1, -1], [0, 0], [1, 1], [2, 2], [3, 3]])
 
 #Animations
 kmeans = KMeans(dataset, method="lloyd", centroids=False, k=3, distance="euclidean")
