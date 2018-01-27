@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 k = 2
-X = np.genfromtxt("data-dimred-X.csv", dtype=float, delimiter=',').T
-y = np.genfromtxt("data-dimred-y.csv", dtype=float, delimiter=',')
+X = np.genfromtxt("data/data-dimred-X.csv", dtype=float, delimiter=',').T
+y = np.genfromtxt("data/data-dimred-y.csv", dtype=float, delimiter=',')
 
 #from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 #clf = LinearDiscriminantAnalysis(n_components=2)
@@ -56,13 +56,13 @@ z = np.dot(X, eivec[:3].T)
 z = z.T
 
 plt.scatter(z[0], z[1], c=y)
-plt.savefig("lda_2d.png", bbox_inches="tight", pad_inches=0)
+plt.savefig("out/03/lda/lda_2d.png", bbox_inches="tight", pad_inches=0)
 plt.show()
 
 # plot in 2D
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.scatter3D(z[0], z[1], z[2], c=y);
-plt.savefig("lda_3d.png", bbox_inches="tight", pad_inches=0)
+plt.savefig("out/03/lda/lda_3d.png", bbox_inches="tight", pad_inches=0)
 plt.show()
 

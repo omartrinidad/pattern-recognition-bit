@@ -4,7 +4,7 @@ import numpy.polynomial.polynomial as poly
 import matplotlib.pyplot as plt
 
 # read data
-data = np.loadtxt('whData.dat', dtype=np.object)
+data = np.loadtxt('data/whData.dat', dtype=np.object)
 
 # Reading and storing columns 0 and 1 and finally converted to numpy.float array
 data = data[:, 0:2].astype(np.float)

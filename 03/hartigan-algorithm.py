@@ -1,7 +1,7 @@
 import numpy as np
 
 k = 3
-X = np.genfromtxt("data-clustering-1.csv", dtype=float, delimiter=',')
+X = np.genfromtxt("data/data-clustering-1.csv", dtype=float, delimiter=',')
 X = X.T
 
 n_examples = X.shape[0]
