@@ -2,34 +2,34 @@
 # encoding: utf8
 import numpy as np
 import matplotlib.pyplot as plt
+import timeit
 from knn import *
 from auxiliar import *
 
-# ToDo: Add Voronoi diagram limits
 
 @save_figure()
-def scatterplot(dataset, path=""):
-    fig = plt.figure(figsize=(7.5, 3.5))
-    ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])
+def scatterplot(dataset, labels, path=""):
+    """
+    """
 
-    ax.set_xlabel("x", size=14)
-    ax.set_ylabel("y", size=14)
+    fig, ax = plt.subplots()
 
-    ax.legend(bbox_to_anchor=(0., 1.02, 1., .102), 
-            loc=3, ncol=1, mode="expand", borderaxespad=0., fontsize=12)
+    labels = np.array(labels)
 
-    negative = np.where(dataset.training_labels == -1)
-    x = dataset.training[negative,0:1]
-    y = dataset.training[negative,1:2]
-    neg = plt.scatter(x, y, marker="o", label="Negative")
+    negative = np.where(labels == -1)[0]
+    x = dataset.test[negative,0:1]
+    y = dataset.test[negative,1:2]
+    plt.scatter(x, y, marker="o", label="Negative", alpha=0.666, c="#2222ee")
 
-    positive = np.where(dataset.training_labels == 1)
-    x = dataset.training[positive,0:1]
-    y = dataset.training[positive,1:2]
-    pos = plt.scatter(x, y, marker="^", label="Positive")
+    positive = np.where(labels == 1)[0]
+    x = dataset.test[positive,0:1]
+    y = dataset.test[positive,1:2]
+    plt.scatter(x, y, marker="o", label="Positive", alpha=0.333, c="#ee2222")
 
     # plt.xticks(range(len(xticks)), xticks)
     plt.legend(loc='upper left')
+    ax.set_facecolor("#ffffe0")
+
     return plt
 
 
@@ -41,7 +41,7 @@ def performance_plot(
         path=""
         ):
     """
-    ToDo: 
+    ToDo:
     - Check the logarithmic scale.
     """
 
@@ -49,7 +49,7 @@ def performance_plot(
         for i, t in enumerate(times):
             times[i] = [np.log(y) * 1000 for y in t]
 
-    fig = plt.figure(figsize=(7.5, 3.5))
+    fig = plt.figure(figsize=(7.5, 0.5))
     ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])
 
     for t, color, label in zip(times, colors, labels):
@@ -58,10 +58,9 @@ def performance_plot(
     ax.set_xlabel(xlabel, size=14)
     ax.set_ylabel(ylabel, size=14)
 
-    ax.legend(bbox_to_anchor=(0., 1.02, 1., .102), 
-            loc=3, ncol=1, mode="expand", borderaxespad=0., fontsize=12)
-
+    plt.legend(loc='upper left')
     plt.xticks(range(len(xticks)), xticks)
+
     return plt
 
 
@@ -84,36 +83,32 @@ dataset = Dataset(training, test)
 myknn = kNN(dataset)
 
 # Evaluation with euclidean distance
-ks = [1, 5, 7, 9, 10, 15]
+ks = [1, 3, 5, 7, 9, 11]
+
 times1 = list()
 for k in ks:
     time = myknn.fit(k = [k], metric="euclidean")
     times1.append(time)
 
 #print("Running kNN with k = 1, 3, 5 and 7 using Euclidean distance")
-#evaluation(myknn.pred_labels, myknn.test_labels)
-
-# Evaluation with cosine similarity
-times2 = list()
-for k in ks:
-    time = myknn.fit(k = [k], metric="cosine")
-    times2.append(time)
-
-myknn.normalization()
+#myknn.normalization()
 
 times3 = list()
 for k in ks:
     time = myknn.fit(k = [k], metric="euclidean")
     times3.append(time)
 
-times4 = list()
-for k in ks:
-    time = myknn.fit(k = [k], metric="cosine")
-    times4.append(time)
+evaluation(myknn.pred_labels, myknn.test_labels)
+scatterplot(dataset, myknn.pred_labels[1], path="latex/knn1.tex")
+scatterplot(dataset, myknn.pred_labels[5], path="latex/knn5.tex")
+scatterplot(dataset, myknn.pred_labels[11], path="latex/knn11.tex")
 
-scatterplot(dataset, path="latex/knn.tex")
-
-colors = ['r', 'b', 'g', 'black']
-labels = ['Euclidean', 'Cosine', 'Euclidean normalized', 'Cosine normalized']
-times = [times1, times2, times3, times4]
-performance_plot(times, colors, labels, "Nearest neighbors", "Miliseconds", ks, log_scale=False, path="out/knn_times.png")
+"""
+colors = ['r', 'g' ]
+labels = ['Euclidean', 'Euclidean normalized']
+times = [times1, times3]
+performance_plot(
+        times, colors, labels, "Nearest neighbors",
+        "Miliseconds", ks, log_scale=False, path="latex/knn_times.tex"
+        )
+"""

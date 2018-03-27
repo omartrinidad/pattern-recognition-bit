@@ -1,27 +1,16 @@
 #!/usr/bin/python
 # encoding: utf8
 
+
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.spatial.distance import cdist
+from matplotlib2tikz import save as tikz_save
 
 from matplotlib import rc
-rc("text", usetex=True)
+#rc("text", usetex=True)
 
-def plot(X, clusters, title=None, path=None):
-    """
-    """
-    clusters = np.where(clusters == 1, "#ee2222", "#2222ee")
-    fig = plt.figure()
-    plt.scatter(X[:,0], X[:,1], c=clusters, marker="s", alpha=0.333)
 
-    if title:
-        plt.title(title)
-
-    if path:
-        plt.savefig(path, bbox_inches="tight", pad_inches=0, figsize=(30,60))
-
-    plt.show()
 
 
 def spectral(X, beta):
@@ -44,8 +33,22 @@ def spectral(X, beta):
 
 X = np.genfromtxt('data/data-clustering-2.csv', dtype=float, delimiter=',').T
 
-for i in [1, 3, 5, 7]:
+for i in [3, 7]:
     clusters = spectral(X, i)
-    path = "out/02/beta{}.png".format(i)
-    plot(X, clusters, r"$\beta$ = {}".format(i), path)
+    #path = "out/02/beta{}.png".format(i)
+    path="latex/spectral_{}.tex".format(i)
+    #plot(X, clusters, "X", path)
 
+    fig = plt.figure()
+    x, y = X[:,0], X[:,1]
+    a = (clusters == -1).nonzero()
+    b = (clusters == 1).nonzero()
+    plt.scatter(x[a], y[a], c="#ee2222", label="Cluster 1", marker="s", alpha=0.333)
+    plt.scatter(x[b], y[b], c="#2222ee", label="Cluster 2", marker="s", alpha=0.333)
+
+    plt.legend(loc='upper left')
+
+    if path:
+        tikz_save(path)
+
+    plt.show()

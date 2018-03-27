@@ -58,19 +58,22 @@ for i in range(len(d)):
   predictions = X_test * W
   # Plot the results
   ## Plot the data
-  l1, = ax.plot(train_data, train_labels, 'k.')
+
+  l1, = ax.plot(train_data, train_labels, 'ko', alpha=0.555, c="#2222ee")
   ## Plot the model line
   l2, = ax.plot(regressionX, y, 'b-')
   ## plot the predictions
-  l3, = ax.plot(test_data, predictions, 'r.')
+  l3, = ax.plot(test_data, predictions, 'ro', alpha=0.555, c="#ee2222")
+
   ## Setting axes limits and title
   ax.set_xlim(np.amin(train_data)-5, np.amax(train_data)+5)
   ax.set_ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
-  ax.set_title("d = " + str(d[i]))
 
   #fig.legend((l1, l2, l3), ('Data', 'Polynomial fitted line', 'Predictions'), 'lower right')
-  fig.text(0.5, 0.04, 'Height', ha='center')
-  fig.text(0.04, 0.5, 'Weight', va='center', rotation='vertical')
+  ax.set_facecolor("#ffeeee")
+  ax.set_xlim(150, 195)
+  plt.xlabel("Height")
+  plt.ylabel("Weight")
 
   plt.savefig("out/01/regression_d_{}.png".format(i), bbox_inches="tight", pad_inches=0)
   tikz_save("latex/regression_d_{}.tex".format(i))

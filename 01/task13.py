@@ -28,30 +28,33 @@ def updateParams(k, alpha, N,sum_log_di, x, h):
     param = np.linalg.inv(hessian).dot(vec)
     return k+param[0], alpha+param[1]
 
-if __name__ == "__main__":
-    #loading histograms
-    data = np.loadtxt('myspace.csv',dtype=np.object,comments='#',delimiter=',')
-    h = data[:,1].astype(np.int)
-    h = np.array([x for x in h if x>0])
-    x = np.array([num for num in range(1, h.shape[0]+1)])
 
-    k = 1.0
-    alpha = 1.0
+#loading histograms
+data = np.loadtxt('myspace.csv',dtype=np.object,comments='#',delimiter=',')
+h = data[:,1].astype(np.int)
+h = np.array([x for x in h if x>0])
+x = np.array([num for num in range(1, h.shape[0]+1)])
 
-    N = np.sum(h)
-    sum_log_di = np.sum(np.multiply(np.log(x), h))
-    for i in range(0,20):
-        k,alpha = updateParams(k, alpha, N, sum_log_di, x, h)
-        #print i
-        #print k
-        #print alpha
-        #print "________"
+k = 1.0
+alpha = 1.0
 
-    x_1 = np.linspace(1,500,2500)
-    fig = plt.figure()
-    axs = fig.add_subplot(111)
-    y = N * (k/alpha) * np.multiply(np.power(np.divide(x_1,alpha), k-1), np.exp(-1.0* np.power(np.divide(x_1,alpha), k)))
-    axs.plot(x_1,y, 'b')
-    axs.plot(x, h, 'g')
-    tikz_save("latex/fit_weibull.tex")
-    plt.show()
+N = np.sum(h)
+sum_log_di = np.sum(np.multiply(np.log(x), h))
+for i in range(0,20):
+    k,alpha = updateParams(k, alpha, N, sum_log_di, x, h)
+    #print i
+    #print k
+    #print alpha
+    #print "________"
+
+x_1 = np.linspace(1,500,2500)
+fig = plt.figure()
+axs = fig.add_subplot(111)
+y = N * (k/alpha) * np.multiply(np.power(np.divide(x_1,alpha), k-1), np.exp(-1.0* np.power(np.divide(x_1,alpha), k)))
+
+axs.set_facecolor("#eeeeff")
+axs.plot(x_1, y, 'b', linewidth=2)
+axs.plot(x, h, 'g', linewidth=2)
+
+tikz_save("latex/fit_weibull.tex")
+plt.show()

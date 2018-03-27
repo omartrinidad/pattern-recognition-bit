@@ -74,16 +74,26 @@ predictionsb = X_test * Wb
 ## Plot the data
 @save_figure()
 def plot(path=""):
-    plt.plot(train_data, train_labels, 'k.', label='Data')
+
+    fig, ax = plt.subplots(figsize=(30, 6))
+
+    plt.plot(train_data, train_labels, 'ko', alpha=0.555, c="#2222ee")
     ## Plot the polynomial fitted line
-    plt.plot(regressionX, yp, 'b-', label='Polynomial Fit')
+    plt.plot(regressionX, yp, 'b-', label='Polynomial')
     ## plot the bayesian fitted line
-    plt.plot(regressionX, yb, 'g-', label='Bayesian Regression')
+    plt.plot(regressionX, yb, 'g-', label='Bayesian')
     ## Setting axes limits
     plt.xlim(np.amin(train_data)-5, np.amax(train_data)+5)
     plt.ylim(np.amin(train_labels)-5, np.amax(train_labels)+5)
-    plt.legend(loc='lower right')
-    #plt.savefig("out/task23/bayesian_regression.png", bbox_inches="tight", pad_inches=0)
+
+    #plt.legend(loc='lower right')
+
+    ax.set_facecolor("#ffeeee")
+    ax.set_xlim(150, 195)
+    plt.xlabel("Height")
+    plt.ylabel("Weight")
+    plt.legend(loc='upper left')
+
     return plt
 
 plot(path="latex/bayes.tex")

@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib2tikz import save as tikz_save
 
 k = 2
 X = np.genfromtxt("data/data-dimred-X.csv", dtype=float, delimiter=',').T
@@ -56,13 +57,15 @@ z = np.dot(X, eivec[:3].T)
 z = z.T
 
 plt.scatter(z[0], z[1], c=y)
-plt.savefig("out/03/lda/lda_2d.png", bbox_inches="tight", pad_inches=0)
+path="latex/lda_2d.tex"
+tikz_save(path)
 plt.show()
 
 # plot in 2D
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 ax.scatter3D(z[0], z[1], z[2], c=y);
-plt.savefig("out/03/lda/lda_3d.png", bbox_inches="tight", pad_inches=0)
+#path="latex/pca_2d.tex"
+#tikz_save(path)
+plt.savefig("out/03/lda_3d.png", bbox_inches="tight", pad_inches=0)
 plt.show()
-

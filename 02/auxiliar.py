@@ -24,6 +24,7 @@ def save_figure():
         def wrapper(*args, **kwargs):
             plt = function(*args, **kwargs)
             path = kwargs["path"]
+            print(path)
             if path.endswith(".tex"):
                 tikz_save(path)
             else:

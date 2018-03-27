@@ -36,7 +36,7 @@ for e in range(30):
     upd_theta = 0
     upd_weight = 0
 
-    # random batch 
+    # random batch
     for x, y in unison_shuffled(X, Y):
     # for i in np.arange(n_examples):
 

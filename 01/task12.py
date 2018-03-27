@@ -10,13 +10,13 @@ from scipy.stats import norm
 from auxiliar import *
 
 
-@save_figure_latex
-def plot(hs, mean, std):
+@save_figure()
+def plot(hs, mean, std, path=""):
     """
     # ToDo: hack the tails
     """
     fig, ax = plt.subplots()
-    plt.hist(hs, normed=True, alpha=0.5, bins=4)
+    plt.hist(hs, normed=True, alpha=0.5, bins=3)
     xmin, xmax = plt.xlim()
     x = np.linspace(xmin - 25, xmax + 25, 100)
 
@@ -24,16 +24,17 @@ def plot(hs, mean, std):
     #pdf = np.hstack([0, pdf, 0])
 
     plt.plot(x, pdf, 'blue', linewidth=2)
-    plt.plot(hs, len(hs) * [0.002], 'o', markersize=6, color='grey')
+    plt.plot(hs, len(hs) * [0.002], 'o', markersize=6, alpha=0.333, c="#2222ee")
 
     # fix x and y labels
     y = plt.yticks()[0]
     plt.yticks(y, y)
 
-    plt.xlabel("Height")
-    plt.ylabel("Bins")
+    ax.set_facecolor("#eeeeff")
+    ax.set_xlim(150, 195)
 
-    # plt.show()
+    plt.xlabel("Height in centimeters")
+    #plt.ylabel("Bins")
 
     return plt
 
@@ -46,4 +47,4 @@ hs = np.array([d[1] for d in data])
 mean = np.mean(hs)
 std = np.std(hs)
 
-plot(hs, mean, std)
+plot(hs, mean, std, path="latex/fit_normal.tex")

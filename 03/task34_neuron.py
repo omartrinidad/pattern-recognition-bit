@@ -4,6 +4,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
+from matplotlib2tikz import save as tikz_save
 
 
 def unison_shuffled(a, b):
@@ -68,7 +69,8 @@ for e in range(30):
         plt.contourf(x,y,zi, alpha=0.2, levels=np.linspace(np.amin(zi.ravel()), np.amax(zi.ravel()), 101), cmap=cmap, antialiased = True)
 
         if correct_predictions == 200:
-            plt.savefig("out/04/convergence_neuron.png", bbox_inches="tight", pad_inches=0)
+            path="latex/neuron.tex"
+            tikz_save(path)
             break
 
         plt.show()

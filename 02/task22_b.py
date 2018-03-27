@@ -47,10 +47,11 @@ corr_hw = covariance_matrix[0, 1] / (std_h * std_w)
 # Calculate (predict) the corresponding weight for given height
 f = lambda x : mean_w + corr_hw * std_w / std_h * (x - mean_h)
 
+fig, ax = plt.subplots()
 # Plot data
-plt.plot(train_data, train_labels, 'k.', label='Data')
+plt.plot(train_data, train_labels, 'ko', label='Data', alpha=0.555, c="#2222ee")
 # Plot predicted value
-plt.plot(test_data, f(test_data), 'r.', label='Predictions')
+plt.plot(test_data, f(test_data), 'ro', label='Predictions', alpha=0.555, c="#ee2222")
 # Plot the model
 ## Grid XY points to build contour
 x = np.linspace(np.amin(train_data)-5, np.amax(train_data)+5, 1000)
@@ -62,7 +63,12 @@ plt.contour(x,y,zi)
 
 plt.xlim(np.amin(train_data)-5, np.amax(train_data)+5)
 plt.ylim(np.amin(train_labels)-8, np.amax(train_labels)+7)
+plt.xlabel("Height")
+plt.ylabel("Weight")
 plt.legend(loc='upper left')
-plt.savefig("out/task22/bivariate_gaussian.png", bbox_inches="tight", pad_inches=0)
-tikz_save("latex/expectation.tex")
+
+ax.set_facecolor("#ffeeee")
+
+plt.savefig("out/bivariate_gaussian.png", bbox_inches="tight", pad_inches=0)
+#tikz_save("latex/expectation.tex")
 plt.show()

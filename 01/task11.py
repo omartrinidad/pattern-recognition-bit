@@ -15,17 +15,22 @@ def plotData2D(X, path = ""):
     # axs.set_aspect('equal')
 
     # plot the data
-    axs.plot(X[0,:], X[1,:], 'ro', label='data')
+    axs.plot(X[0,:], X[1,:], 'o', label='data', alpha=0.333, c="#2222ee")
 
     # set x and y limits of the plotting area
-    xmin = X[0,:].min()
-    xmax = X[0,:].max()
-    axs.set_xlim(xmin-10, xmax+10)
-    axs.set_ylim(-2, X[1,:].max()+10)
+    xmin, xmax = X[0,:].min()-5, X[0,:].max()+5
+    ymin, ymax = X[1,:].min()-5, X[1,:].max()+5
+
+    axs.set_facecolor("#eeeeff")
+    axs.set_xlim(xmin, xmax)
+    axs.set_ylim(ymin, ymax)
 
     # set properties of the legend of the plot
-    leg = axs.legend(loc='upper left', shadow=True, fancybox=True, numpoints=1)
-    leg.get_frame().set_alpha(0.5)
+    # leg = axs.legend(loc='upper left', shadow=True, fancybox=True, numpoints=1)
+    # leg.get_frame().set_alpha(0.5)
+
+    plt.xlabel("Height in centimeters")
+    plt.ylabel("Weight in kilograms")
 
     # either show figure on screen or write it to disk
     return plt

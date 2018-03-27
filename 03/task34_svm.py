@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as colors
+from matplotlib2tikz import save as tikz_save
 
 def trainL2SVMPolyKernel(X, y, d, b=1., C=1., T=1000):
   m, n = X.shape
@@ -41,7 +42,9 @@ zi = applyL2SVMPolyKernel(np.vstack((CX.ravel(),CY.ravel())), XS, ys, ms, w0, d=
 zi = np.sign(zi).reshape((1000,1000))
 cmap = colors.LinearSegmentedColormap.from_list("", ["blue","white","orange"])
 plt.contourf(x,y,zi, alpha=0.2, levels=np.linspace(np.amin(zi.ravel()), np.amax(zi.ravel()), 101), cmap=cmap, antialiased = True)
-plt.savefig("out/04/kernel_svm_classroom.png", bbox_inches="tight", pad_inches=0)
+#plt.savefig("out/04/kernel_svm_classroom.png", bbox_inches="tight", pad_inches=0)
+path="latex/kernel.tex"
+tikz_save(path)
 plt.show()
 
 

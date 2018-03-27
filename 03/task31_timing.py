@@ -53,7 +53,7 @@ macqueen_times = {i:[] for i in ks}
 hartigan_times = {i:[] for i in ks}
 
 for k in ks:
-    for i in range(10):
+    for i in range(3):
         lloyd_times[k].append(lloyd(k))
         macqueen_times[k].append(macqueen(k))
         hartigan_times[k].append(hartigan(k))
@@ -72,9 +72,9 @@ hartigan_times = list(hartigan_times.values())
 
 # plot
 # check the logarithmic scale
-lloyd_times = [np.log(y) * 1000 for y in lloyd_times]
-macqueen_times = [np.log(y) * 1000 for y in macqueen_times]
-hartigan_times = [np.log(y) * 1000 for y in hartigan_times]
+lloyd_times = [y * 1000 for y in lloyd_times]
+macqueen_times = [y * 1000 for y in macqueen_times]
+hartigan_times = [y * 1000 for y in hartigan_times]
 
 fig = plt.figure(figsize=(7.5, 3.5))
 ax = fig.add_axes([0.1, 0.1, 0.6, 0.75])

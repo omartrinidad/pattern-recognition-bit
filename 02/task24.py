@@ -25,7 +25,7 @@ def binary_plot(binary_matrix, color, title, path="", labels=True, latex=True):
     """Binary plot from binary matrix"""
 
     fig, ax = plt.subplots()
-    plt.title(title)
+    #plt.title(title)
 
     # define the colors
     cmap = mpl.colors.ListedColormap(['w', color])
@@ -50,9 +50,8 @@ def binary_plot(binary_matrix, color, title, path="", labels=True, latex=True):
 
     ax.set_xticks(np.arange(0, x, 1)-0.5, minor=True)
     ax.set_yticks(np.arange(0, y, 1)-0.5, minor=True)
-
     #ax.set_xticklabels(np.arange(x-1, -1, -1), minor=True, horizontalalignment='center')
-    ax.yaxis.set(ticks=np.arange(0, y, 1), ticklabels=np.arange(y-1, -1, -1))
+    #ax.yaxis.set(ticks=np.arange(0, y, 1), ticklabels=np.arange(y-1, -1, -1))
 
     ax.grid(which='minor', color='black', linestyle='-', linewidth=1.444)
     return plt
@@ -107,14 +106,14 @@ bits = np.unpackbits(integers)
 bits = bits.reshape((8,8))[:,5:]
 bits = np.where(bits == 0, -1, +1)
 
-#binary_plot(bits, "out/task24/wolfram_rule.png", 'red', "Bits")
+binary_plot(bits, 'red', "", path="out/rule_110.png")
 
 # y matrix
 y_110 = wolfram_rule(110)
 y_126 = wolfram_rule(126)
 
 # Original y
-#binary_plot(one2two(y_110), "out/rule_110.png", 'blue', r"$\boldsymbol{y}$ for rule 110")
+binary_plot(one2two(y_110), 'blue', r"$\boldsymbol{y}$ for rule 110", path="out/rule_110_y.png")
 #binary_plot(one2two(y_126), "out/rule_126.png", 'blue', r"$\boldsymbol{y}$ for rule 126")
 
 # y_hat matrix
@@ -126,7 +125,7 @@ yhat_110 = np.dot(X, w_110)
 yhat_126 = np.dot(X, w_126)
 
 # y hat
-#binary_plot(one2two(yhat_110), "out/task24/y_hat_110.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 110")
+binary_plot(one2two(yhat_110), 'green', "", path="out/y_hat_110.png")
 #binary_plot(one2two(yhat_126), "out/task24/y_hat_126.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 126")
 
 # Third part of the task
@@ -143,7 +142,7 @@ yhat_110 = np.dot(big_phi, w_110)
 w_126 = lsq_solution_V3(big_phi, y_126)
 yhat_126 = np.dot(big_phi, w_126)
 
-binary_plot(big_phi, 'red', r"Feature design matrix $\Phi$", path="latex/feature_design_matrix.tex")
+binary_plot(big_phi, 'red', r"", path="out/feature_design_matrix.png")
+binary_plot(one2two(yhat_110), 'green', "", path="out/y_hat_110_2.png")
 
-#binary_plot(one2two(yhat_110), "out/task24/y_hat_110_2.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 110")
 #binary_plot(one2two(yhat_126), "out/task24/y_hat_126_2.png", 'green', r"$\boldsymbol{\hat{y}}$ for rule 126")
